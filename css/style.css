@@ -16,6 +16,7 @@
   position: relative;
   width: 700px;
   height: 300px;
+  margin: 0 auto;
 }
 
 .item {
