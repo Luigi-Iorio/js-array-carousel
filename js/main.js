@@ -61,6 +61,10 @@ alto.addEventListener("click", function () {
     domItems[contImmagine].classList.remove("active");
     contImmagine--;
     domItems[contImmagine].classList.add("active");
+  } else if (contImmagine === 0) {
+    domItems[contImmagine].classList.remove("active");
+    contImmagine = domItems.length - 1;
+    domItems[contImmagine].classList.add("active");
   }
 });
 
@@ -69,6 +73,10 @@ basso.addEventListener("click", function () {
   if (contImmagine < domItems.length - 1) {
     domItems[contImmagine].classList.remove("active");
     contImmagine++;
+    domItems[contImmagine].classList.add("active");
+  } else if (contImmagine === domItems.length - 1) {
+    domItems[contImmagine].classList.remove("active");
+    contImmagine = 0;
     domItems[contImmagine].classList.add("active");
   }
 });
