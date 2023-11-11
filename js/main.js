@@ -69,6 +69,16 @@ for (let i = 0; i < immagini.length; i++) {
   imgMiniature.alt = `Paesaggio ${i + 1}`;
   // inserisco immagine in miniatura
   miniatura.append(imgMiniature);
+
+  // click miniature
+  miniatura.addEventListener("click", function () {
+    if (layer === document.querySelector(".selected")) {
+      contImmagine[i] == contMiniature[i];
+    } else {
+      document.querySelector(".selected").classList.remove("selected");
+      layer.classList.add("selected");
+    }
+  });
 }
 
 // creazione frecce
