@@ -1,5 +1,6 @@
 "use strict";
 
+
 // assegnazione / dichiarazione variabile per il container
 const container = document.querySelector(".container");
 // creazione elemento items
@@ -12,9 +13,7 @@ container.append(items);
 // creazione array di immagini
 const immagini = ["01.jpg", "02.jpg", "03.jpg", "04.jpg", "05.jpg"];
 // contatore immagini
-let contImmagine = 0;
-// contatore miniature
-let contMiniature = 0;
+let currImage = 0;
 
 // creazione thumbnails nel dom
 const miniature = document.createElement("div");
@@ -33,9 +32,6 @@ for (let i = 0; i < immagini.length; i++) {
   items.append(item);
 
   // assegnazione variabile active
-  if (contImmagine === i) {
-    item.classList.add("active");
-  }
 
   // creazione thumbnail
   const miniatura = document.createElement("div");
@@ -51,8 +47,8 @@ for (let i = 0; i < immagini.length; i++) {
   // inserito in miniatura
   miniatura.append(layer);
 
-  // assegnazione variabile active per miniature
-  if (contMiniature === i) {
+  if (currImage === i) {
+    item.classList.add("active");
     layer.classList.add("selected");
   }
 
@@ -71,12 +67,9 @@ for (let i = 0; i < immagini.length; i++) {
   miniatura.append(imgMiniature);
 
   // click miniature
-  miniatura.addEventListener("click", function () {
-    if (layer === document.querySelector(".selected")) {
-      contImmagine[i] == contMiniature[i];
-    } else {
-      document.querySelector(".selected").classList.remove("selected");
-      layer.classList.add("selected");
+  miniatura.addEventListener("click", function() {
+    if (layer !== document.querySelector(".selected")) {
+      change_image(i)
     }
   });
 }
@@ -95,62 +88,29 @@ basso.classList.add("next");
 // inserimento in items
 miniature.append(basso);
 
-// domitems - per selezzionare tutti gli elementi item nel dom
-const domItems = document.querySelectorAll(".item");
-console.log(domItems);
 
-// domThumbnails - per selezionare tutti gli elementi thumbnail nel dom
-const domThumbnails = document.querySelectorAll(".layer");
+
+function change_image(new_ind) {
+  const domItems = document.querySelectorAll(".item");
+  const domThumbnails = document.querySelectorAll(".layer");
+
+  domItems[currImage].classList.remove("active");
+  domThumbnails[currImage].classList.remove("selected");
+
+  domItems[new_ind].classList.add("active");
+  domThumbnails[new_ind].classList.add("selected");
+  currImage = new_ind
+}
 
 // evento per cambiare le immagini
-// scorrere in dietro
-alto.addEventListener("click", function () {
-  if (contImmagine > 0 && contMiniature > 0) {
-    domItems[contImmagine].classList.remove("active");
-    contImmagine--;
-    domItems[contImmagine].classList.add("active");
-
-    // cambiare classi domThumbnail
-    domThumbnails[contMiniature].classList.remove("selected");
-    contMiniature--;
-    domThumbnails[contMiniature].classList.add("selected");
-  } else if (contImmagine === 0 && contMiniature === 0) {
-    domItems[contImmagine].classList.remove("active");
-    contImmagine = domItems.length - 1;
-    domItems[contImmagine].classList.add("active");
-
-    // cambiare classi domThumbnail
-    domThumbnails[contMiniature].classList.remove("selected");
-    contMiniature = domThumbnails.length - 1;
-    domThumbnails[contMiniature].classList.add("selected");
-  }
+// scorrere indietro
+alto.addEventListener("click", function() {
+  let next = currImage - 1 < 0 ? immagini.length - 1 : currImage - 1;
+  change_image(next)
 });
 
 // scorrere in avanti
-basso.addEventListener("click", function () {
-  if (
-    contImmagine < domItems.length - 1 &&
-    contMiniature < domThumbnails.length - 1
-  ) {
-    domItems[contImmagine].classList.remove("active");
-    contImmagine++;
-    domItems[contImmagine].classList.add("active");
-
-    // cambiare classi domThumbnail
-    domThumbnails[contMiniature].classList.remove("selected");
-    contMiniature++;
-    domThumbnails[contMiniature].classList.add("selected");
-  } else if (
-    contImmagine === domItems.length - 1 &&
-    contMiniature === domThumbnails.length - 1
-  ) {
-    domItems[contImmagine].classList.remove("active");
-    contImmagine = 0;
-    domItems[contImmagine].classList.add("active");
-
-    // cambiare classi domThumbnail
-    domThumbnails[contMiniature].classList.remove("selected");
-    contMiniature = 0;
-    domThumbnails[contMiniature].classList.add("selected");
-  }
+basso.addEventListener("click", function() {
+  let next = currImage + 1 >= immagini.length ? 0 : currImage + 1;
+  change_image(next)
 });
